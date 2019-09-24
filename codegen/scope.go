@@ -205,11 +205,11 @@ func (s *NameScope) GoFullTypeName(att *expr.AttributeExpr, pkg string) string {
 		if actual == expr.ErrorResult {
 			return "goa.ServiceError"
 		}
-		n := s.HashedUnique(actual, Goify(actual.Name(), true), "")
-		if pkg == "" {
-			return n
+		n := Goify(actual.Name(), true)
+		if pkg != "" {
+			n = pkg + "." + n
 		}
-		return pkg + "." + n
+		return s.HashedUnique(actual, n)
 	case expr.CompositeExpr:
 		return s.GoFullTypeName(actual.Attribute(), pkg)
 	default:
